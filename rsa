@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+import math
+
+def is_prime(num):
+    if num < 2:
+        return False
+    for i in range(2, int(math.sqrt(num)) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def factorize(n):
+    for i in range(2, n):
+        if n % i == 0 and is_prime(i):
+            p = i
+            q = n // i
+            if is_prime(q):
+                return p, q
+
+if __name__ == "__main__":
+    # Example usage:
+    test_numbers = [6, 77, 239821585064027, 2497885147362973]
+
+    for test_num in test_numbers:
+        p, q = factorize(test_num)
+        print(f"{test_num} = {p}*{q}")
