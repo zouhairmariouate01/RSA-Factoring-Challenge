@@ -1,26 +1,47 @@
 #!/usr/bin/python3
-import math
+"""
+Factorize as many numbers as possible into a product of two smaller numbers.
+    Usage: factors <file>
+        where <file> is a file containing natural numbers to factor.
+        One number per line
+        You can assume that all lines will be valid natural numbers greater than 1
+        You can assume that there will be no empty line, and no space before and after the valid number
+        The file will always end with a new line
+    Output format: n=p*q
+        one factorization per line
+        p and q don’t have to be prime numbers
+        See example
+    You can work on the numbers of the file in the order of your choice
+    Your program should run without any dependency: You will not be able to install anything on the machine we will run your program on
+    Time limit: Your program will be killed after 5 seconds if it hasn’t finished
+    Push all your scripts, source code, etc… to your repository
+"""
+# library to get arguments
+import sys
 
-def is_prime(num):
-    if num < 2:
-        return False
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True
+# function to factorize numbers
+def factorize_numbers():
+    """
+    Function to search file, convert numbers, and format n=p*q
+    """
+    try:
+        input_file = sys.argv[1]
+        with open(input_file) as f:
+            for number in f:
+                number = int(number)
+                if number % 2 == 0:
+                    print("{}={}*{}".format(number, number // 2, 2))
+                    continue
+                i = 3
+                while i < number // 2:
+                    if number % i == 0:
+                        print("{}={}*{}".format(number, number // i, i))
+                        break
+                    i += 2
+                if i == (number // 2) + 1:
+                    print("{}={}*{}".format(number, number, 1))
+    except (IndexError, FileNotFoundError):
+        pass
 
-def factorize(n):
-    for i in range(2, n):
-        if n % i == 0 and is_prime(i):
-            p = i
-            q = n // i
-            if is_prime(q):
-                return p, q
-
-if __name__ == "__main__":
-    # Example usage:
-    test_numbers = [6, 77, 239821585064027, 2497885147362973]
-
-    for test_num in test_numbers:
-        p, q = factorize(test_num)
-        print(f"{test_num} = {p}*{q}")
+# autostart
+factorize_numbers()
