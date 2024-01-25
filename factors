@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+
+import sys
+import math
+
+def factorize_number(number):
+    for i in range(2, int(math.sqrt(number)) + 1):
+        if number % i == 0:
+            return i, number // i
+    return None
+
+def factorize_file(file_path):
+    with open(file_path, 'r') as file:
+        numbers = file.read().splitlines()
+
+    factorizations = []
+
+    for number_str in numbers:
+        number = int(number_str)
+        factors = factorize_number(number)
+
+        if factors:
+            factorizations.append(f"{number}={factors[0]}*{factors[1]}")
+
+    return factorizations
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+
+    try:
+        result = factorize_file(file_path)
+        for factorization in result:
+            print(factorization)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
