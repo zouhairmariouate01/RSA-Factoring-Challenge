@@ -1,1 +1,0 @@
-python factors.py <file>
