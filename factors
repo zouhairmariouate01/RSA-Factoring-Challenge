@@ -1,36 +1,36 @@
 #!/usr/bin/python3
-from sys import argv
-import math
-"""Factorize as many numbers as possible into a product of 2 smaller nums"""
+import sys
 
+def factorize(n):
+    factors = []
+    for i in range(2, n):
+        while n % i == 0:
+            factors.append(i)
+            n //= i
+    if n > 1:
+        factors.append(n)
+    return factors
 
-def factory(num):
-    """gets the factors of a number"""
-    if num % 2 == 0:
-        i = 2
-        print("{}={}*{}".format(num, int(num//i), i))
-    else:
-        sq = int(math.sqrt(num)) + 1
-        for i in range(3, sq, +2):
-            if num % i == 0:
-                print("{}={}*{}".format(num, int(num//i), i))
-                return
-            if num % (sq + i) == 0:
-                print("{}={}*{}".format(num, sq + i, int(num//(sq + i))))
-                return
-            if num % (sq - i) == 0:
-                print("{}={}*{}".format(num, sq - 1, int(num//(sq - i))))
-                return
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
 
+    input_file = sys.argv[1]
 
-def factors(filename):
-    """read_file and prints them out"""
+    try:
+        with open(input_file, 'r') as file:
+            numbers = [int(line.strip()) for line in file]
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+        sys.exit(1)
+    except ValueError:
+        print("Error: Invalid input in the file. Please make sure all lines are valid natural numbers.")
+        sys.exit(1)
 
-    with open(filename, encoding="utf-8") as my_file:
-        for i in my_file.readlines():
-            n = int(i)
-            result = factory(n)
-
+    for number in numbers:
+        factorization = factorize(number)
+        print(f"{number}={'*'.join(map(str, factorization))}")
 
 if __name__ == "__main__":
-    factors(argv[1])
+    main()
